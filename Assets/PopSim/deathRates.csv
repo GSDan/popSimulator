@@ -1,0 +1,44 @@
+Intestinal infectious,M,14,0,0,0,0,0,1,1,13,31,132,567
+Intestinal infectious,F,16,0,0,0,0,0,2,2,10,34,181,690
+Other bacterial diseases,M,25,43,5,2,1,3,4,13,27,66,206,683
+Other bacterial diseases,F,23,48,5,2,3,2,5,9,21,56,210,669
+Septicaemia,M,21,19,0,2,0,3,3,11,23,60,184,639
+Septicaemia,F,20,17,2,1,3,2,5,8,17,51,195,642
+II Neoplasms,M,2004,19,25,25,40,79,239,903,3353,8320,18331,34082
+II Neoplasms,F,1471,17,29,26,30,105,341,1057,2820,5954,11702,19069
+III Diseases of the blood,M,12,13,4,1,2,2,6,9,14,35,76,222
+III Diseases of the blood,F,11,0,3,2,2,1,3,9,16,31,69,226
+Diabetes mellitus,M,59,0,0,0,2,9,16,28,62,161,570,1698
+Diabetes mellitus,F,43,0,0,0,2,2,8,15,41,104,465,1429
+Vascular and unspecified,M,250,0,0,0,0,0,0,4,26,268,2789,15149
+Vascular and unspecified,F,302,0,0,0,0,0,0,4,25,239,2953,20544
+Parkinsons disease,M,58,0,0,0,0,0,0,1,11,140,935,1999
+Parkinsons disease,F,26,0,0,0,0,0,0,0,5,56,409,1020
+Alzheimers disease,M,63,0,0,0,0,0,0,1,15,97,740,3347
+Alzheimers disease,F,82,0,0,0,0,0,0,2,22,111,959,4620
+Heart disease,M,1251,61,11,4,17,50,200,621,1643,3912,11435,34395
+Heart disease,F,687,42,8,2,10,18,69,169,529,1728,7033,27708
+Pneumonia,M,260,32,6,2,3,6,21,53,134,432,2271,13889
+Pneumonia,F,207,31,5,3,2,3,13,33,82,286,1820,12162
+Chronic lower respiratory,M,351,0,0,3,3,2,15,56,345,1320,3898,9822
+Chronic lower respiratory,F,252,0,0,2,3,2,12,45,289,1028,2922,5771
+chronic obstructive pulmonary diseases,M,327,0,0,0,1,0,8,46,328,1252,3665,9185
+chronic obstructive pulmonary diseases,F,224,0,0,0,0,1,5,36,264,942,2634,4958
+digestive system            ,M,327,21,3,2,5,42,171,370,587,906,2136,5487
+digestive system            ,F,247,14,6,2,5,26,91,205,368,682,1965,5744
+musculoskeletal system,M,35,0,0,0,2,2,6,12,33,93,332,1183
+musculoskeletal system,F,47,0,0,1,1,4,8,15,37,125,470,1761
+genitourinary system        ,M,95,0,0,0,1,2,5,15,54,174,949,4771
+genitourinary system        ,F,83,0,0,0,2,3,6,16,46,159,811,4107
+originating from birth ,M,5,275,7,0,0,0,0,0,0,0,0,0
+originating from birth ,F,4,248,0,0,0,0,0,0,0,0,0,0
+Senility,M,42,0,0,0,0,0,0,0,0,2,97,3921
+Senility,F,85,0,0,0,0,0,0,0,0,0,204,7995
+Sudden infant death,M,4,240,5,0,0,0,0,0,0,0,0,0
+Sudden infant death,F,2,129,4,0,0,0,0,0,0,0,0,0
+Falls,M,49,0,0,0,5,7,19,32,54,105,416,1542
+Falls,F,30,0,0,0,1,3,7,14,23,51,301,1174
+Accidents,M,194,51,21,15,134,171,231,194,183,226,745,3050
+Accidents,F,93,14,12,6,36,44,67,74,84,122,606,2655
+Intentional self-harm,M,102,0,0,2,78,125,172,175,132,83,89,148
+Intentional self-harm,F,24,0,0,0,14,31,33,48,37,24,31,30
