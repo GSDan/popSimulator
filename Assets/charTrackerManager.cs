@@ -9,6 +9,11 @@ public class charTrackerManager : MonoBehaviour {
 
 	int lastBorn = 0;
 
+	public int getNumChars()
+	{
+		return chars.Count;
+	}
+
 	public void updateTrackers(GameObject[] bars, int currentYear)
 	{
 		bool finished = false;
@@ -34,16 +39,40 @@ public class charTrackerManager : MonoBehaviour {
 	{
 		charTracker tracker = (Instantiate (Resources.Load ("charIcon", typeof(GameObject))) as GameObject).GetComponent<charTracker> ();
 
-		if(sim.yearBorn - lastBorn < 10)
+		bool needsOffset = false;
+
+		for(int i = chars.Count -1; i >= 0; i--)
 		{
-			if(chars.Count >= 3 && chars[chars.Count-2].trackedSim.yearBorn - sim.yearBorn >= 10)
+			if(sim.yearBorn - chars[i].trackedSim.yearBorn < 10)
 			{
-				tracker.yOffset = chars[chars.Count-2].yOffset;
+				needsOffset = true;
+				break;
 			}
-			else
+			if(sim.yearBorn - chars[i].trackedSim.yearBorn > 10 )
 			{
-				tracker.yOffset = chars[chars.Count-1].yOffset + 50;
+				break;
 			}
+		}
+
+		if(needsOffset)
+		{
+			List<int> banned = new List<int>();
+
+			tracker.yOffset = chars[chars.Count-1].yOffset + 33;
+
+			for(int i = chars.Count -1; i >= 0; i--)
+			{
+				if(sim.yearBorn - chars[i].trackedSim.yearBorn >= 10  && !banned.Contains(chars[i].yOffset) && chars[i].yOffset < chars[chars.Count-1].yOffset + 33)
+				{
+					tracker.yOffset = chars[i].yOffset;
+					//Debug.Log(sim.firstName + " found a suitable offset from " + chars[i].trackedSim.firstName);
+				}
+				else if(!banned.Contains(chars[i].yOffset))
+				{
+					banned.Add(chars[i].yOffset);
+				}
+			}
+
 		}
 
 		tracker.transform.parent = transform;

@@ -24,6 +24,8 @@ public class personSim
 	public string firstName { get; private set; }
 	public string surname { get; private set; }
 
+	charTrackerManager charManager;
+
 	string[] maleNames = {"Jon","Dan", "Hugo", "Robin", "Wojtek", "Leeroy", "Craig", "Daemon", "Laurence", "William", 
 							"Albert", "Luigi", "Mario", "Roy", "Kyle", "Sam", "Tim", "Vinny", "Greg", "Brad", 
 							"Jeff", "Dave", "Ryan", "Alexis", "Drew", "Peter", "Chris", "Richard", "Alf", "Matthew"};
@@ -124,6 +126,12 @@ public class personSim
 
 	public bool yearlyUpdate(List<personSim> chars, causeOfDeath[] causes, int currentYear)
 	{
+
+		if(charManager == null)
+		{
+			charManager = GameObject.FindGameObjectWithTag("trackerManager").GetComponent<charTrackerManager>();
+		}
+
 		int age = getAge(currentYear);
 		if(isAlive){
 
@@ -132,10 +140,10 @@ public class personSim
 				partner.diedThisYear (causes, currentYear);
 			}
 
-			if(partner != null && partner.isAlive && age >= 18 && age <= 43  && children.Count < 3)
+			if(partner != null && partner.isAlive && age >= 18 && age <= 46  && children.Count < 2 && charManager.getNumChars() < 10)
 			{
 				//chance of gaining child
-				if(UnityEngine.Random.value >= 0.93f)
+				if((UnityEngine.Random.value >= 0.95f) || (charManager.getNumChars() < 3 && (UnityEngine.Random.value >= 0.85f)))
 				{
 					personSim child = new personSim(currentYear, 0, this, partner);
 					chars.Add(child);

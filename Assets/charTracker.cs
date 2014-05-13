@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class charTracker : MonoBehaviour {
-
+	
 	public int yOffset = 0;
 
 	public personSim trackedSim { get; set;}

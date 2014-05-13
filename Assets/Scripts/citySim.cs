@@ -111,6 +111,12 @@ public class citySim : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if(Input.GetKeyUp(KeyCode.RightArrow))
+		{
+			yearsToCompute += 5;
+		}
+
+
 		if(startYear + yearsToCompute > currentYear){
 
 			birthRate = ((float)popData[0]/((float)currentPop/1000));
