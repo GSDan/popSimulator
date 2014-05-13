@@ -15,6 +15,7 @@ public class personSim
 	public bool isMarried { get; set;}
 	int coupledSince = 0;
 	int marriedSince = 0;
+	int lastYearUsed = 0;
 
 	public Color eyeColour { get; private set; }
 	public Color hairColour { get; private set; }
@@ -120,8 +121,17 @@ public class personSim
 
 	}
 
-	public int getAge(int currentYear)
+	public int getAge(int currentYear = -3)
 	{
+		if(currentYear == -3)
+		{
+			currentYear = lastYearUsed;
+		}
+		else
+		{
+			lastYearUsed = currentYear;
+		}
+
 		if (isAlive)
 			return currentYear - yearBorn;
 		else
