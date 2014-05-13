@@ -13,6 +13,8 @@ public class personSim
 	public List<personSim> children { get; private set;}
 	public personSim partner { get; private set; }
 	public bool isMarried { get; set;}
+	int coupledSince = 0;
+	int marriedSince = 0;
 
 	public Color eyeColour { get; private set; }
 	public Color hairColour { get; private set; }
@@ -142,7 +144,7 @@ public class personSim
 				partner.diedThisYear (causes, currentYear);
 			}
 
-			if(partner != null && partner.isAlive && age >= 18 && age <= 46  && children.Count < 2 && charManager.getNumChars() < 10)
+			if(partner != null && partner.isAlive && age >= 18 && age <= 46  && children.Count < 2 && charManager.getNumChars() < 8)
 			{
 				//chance of gaining child
 				if((UnityEngine.Random.value >= 0.95f) || (charManager.getNumChars() < 3 && (UnityEngine.Random.value >= 0.85f)))
@@ -166,6 +168,7 @@ public class personSim
 			{
 				partner.isMarried = true;
 				isMarried = true;
+				marriedSince = currentYear;
 				evManager.addEvent(getName() + " married " + partner.getName() + " in " + currentYear + "!");
 				if(partner.isMale)
 				{	
@@ -191,6 +194,7 @@ public class personSim
 				if(isMale)partner = new personSim( yearBorn + UnityEngine.Random.Range(-5, 5), -0.3f);
 				else partner = new personSim(currentYear  + UnityEngine.Random.Range(-5, 5), 0.3f);
 				evManager.addEvent(getName() + " started going out with " + partner.getName() + " in " + currentYear);
+				coupledSince = currentYear;
 			}
 
 			updateThoughts(currentYear);
@@ -255,18 +259,37 @@ public class personSim
 			charThoughts[i] = "";
 
 			//looking after parents?
-			if(!parents && (guard1 != null && guard2 != null) && (guard1.getAge(currentYear) > 80 ||  guard1.getAge(currentYear) > 80))
+			if(!parents && (guard1 != null && guard2 != null))
 			{
-				charThoughts[i] = "I'm having to dedicate a lot of time to looking after my parents";
-				if(getAge(currentYear) > 60)
+				if(guard1.getAge(currentYear) > 80 ||  guard1.getAge(currentYear) > 80)
 				{
-					charThoughts[i] += " despite getting on in years myself";
+					charThoughts[i] = "I'm having to dedicate a lot of time to looking after my parents";
+					if(getAge(currentYear) > 60)
+					{
+						charThoughts[i] += " despite getting on in years myself";
+					}
+					if(children.Count > 0)
+					{
+						charThoughts[i] += ". But I also have my own family to take care of";
+					}
+					charThoughts[i] += "...";
 				}
-				if(children.Count > 0)
+				if(!guard1.isAlive && currentYear - guard1.yearDied < 10)
 				{
-					charThoughts[i] += ". But I also have my own family to take care of";
+					if(!guard2.isAlive)
+						charThoughts[i] += " I still miss my parents.";
+					else if(guard1.isMale)
+						charThoughts[i] += " I still miss my Dad.";
+					else
+						charThoughts[i] += " I still miss my Mum.";
 				}
-				charThoughts[i] += "...";
+				else if(!guard2.isAlive && currentYear - guard2.yearDied < 10)
+				{
+					if(guard2.isMale)
+						charThoughts[i] += " I still miss my Dad.";
+					else
+						charThoughts[i] += " I still miss my Mum.";
+				}
 				parents = true;
 			}
 
@@ -309,6 +332,7 @@ public class personSim
 						charThoughts[i] = "I'm glad my child " + children[0].firstName + " is able to support me, the pension might not be enough otherwise. ";
 				}
 
+				personSim childDead = null;
 				bool grand = false;
 				bool kidsAlive = false;
 				int avAge = 0;
@@ -319,6 +343,9 @@ public class personSim
 					{
 						kidsAlive = true;
 						avAge += child.getAge(currentYear);
+					}
+					else{
+						childDead = child;
 					}
 					if(child.children.Count > 0)
 					{
@@ -335,8 +362,124 @@ public class personSim
 				{
 					charThoughts[i] += " Hopefully I'll be a grandparent soon!";
 				}
+				else if(children.Count > 1 && !kidsAlive)
+				{
+					charThoughts[i] = "My children died before me, how could this happen??";
+				}
+				else if(children.Count > 0 && childDead != null)
+				{
+					charThoughts[i] = "Poor little " + childDead.firstName + ".";
+				}
+
+				if(avAge > 0 && avAge < 5 && kidsAlive && childDead == null)
+				{
+					if(children.Count > 1)
+						charThoughts[i] = "My kids are so cute!";					
+					else
+						charThoughts[i] = children[0].firstName + " is such a cute kid.";
+				}
 
 				kids = true;
+			}
+			else if(!part && currentYear - coupledSince < 4  && partner.isAlive)
+			{
+				if(partner.isMale)
+					charThoughts[i] = "Isn't " + partner.firstName + " a dreamboat? I'm so glad I met him.";
+				else
+					charThoughts[i] += partner.firstName + " is amazing. I'm so glad I met her.";
+				part = true;
+			}
+			else if(!marriage && partner != null && partner.isAlive)
+			{
+				if(isMarried && currentYear - marriedSince > 50)
+				{
+					charThoughts[i] = "I've been married to " + partner.firstName + " for such a long time, I'd be lost without ";
+					if(partner.isMale)
+						charThoughts[i] += "him.";
+					else
+						charThoughts[i] += "her.";
+				}
+
+				else if(isMarried && currentYear - marriedSince < 5)
+				{
+					charThoughts[i] = "I'm still getting used to the married life. " + partner.firstName + " treats me so well.";
+				}
+
+				else if(!isMarried && currentYear - coupledSince > 2)
+				{
+					charThoughts[i] = "I think " + partner.firstName + " has marriage in mind. Maybe I should propose?";
+				}
+				marriage = true;
+			}
+			else if(!part && partner!=null && !partner.isAlive)
+			{
+				charThoughts[i] = "I miss " + partner.firstName + ".";
+				if(partner.yearDied - partner.yearBorn < 50)
+				{
+					charThoughts[i] += " I was hoping we would grow old together.";
+				}
+				else if(partner.yearDied - partner.yearBorn > 80)
+				{
+					if(partner.isMale)
+						charThoughts[i] += " At least he saw a ripe old age. What a gent he was...";
+					else
+						charThoughts[i] += " At least she saw a ripe old age. What a beauty she was...";
+				}
+
+				part = true;
+			}
+
+			else if(!age)
+			{
+				if(getAge(currentYear) < 8)
+				{
+					charThoughts[i] = "I like turtles.";
+				}
+				else if(getAge(currentYear) > 14 && getAge(currentYear) < 18)
+				{
+					charThoughts[i] = "School is hard!";
+				}
+				else if(getAge(currentYear) > 17 && getAge(currentYear) < 23)
+				{
+					charThoughts[i] = "University is hard - and expensive! I'm sick of eating nothing but Pot Noodles...";
+				}
+				else if(getAge(currentYear) > 110)
+				{
+					charThoughts[i] = "I didn't go through three World Wars for this!";
+				}
+				else if(getAge(currentYear) > 100)
+				{
+					charThoughts[i] = "I got my congratulations letter from HRH, but the royals haven't been the same since the mind-controlling ants invaded...";
+				}
+				age = true;
+			}
+
+			else if(!money)
+			{
+				bool kidsAlive = false;
+				int avAge = 0;
+				
+				foreach(personSim child in children)
+				{
+					if(child.isAlive) 
+					{
+						kidsAlive = true;
+						avAge += child.getAge(currentYear);
+					}
+				}
+
+				if(children.Count > 0) avAge /= children.Count;
+
+				if(children.Count > 1 && kidsAlive)
+				{
+					if(avAge > 25)				
+						charThoughts[i] = "I'm glad my children can finally start supporting themselves, bringing them up was expensive. I might need help from them in the future.";
+					else if(avAge < 25 && avAge > 17)
+						charThoughts[i] = "Putting kids through University is expensive! My bank account is crying!";
+					else if(avAge < 8)
+						charThoughts[i] = "Who knew that raising kids was so expensive?!";
+				}
+				money = true;
 			}
 		}
 
@@ -350,6 +493,7 @@ public class personSim
 
 		foreach(string thought in charThoughts)
 		{
+			if(thought != "")
 			final += thought + "\n";
 		}
 

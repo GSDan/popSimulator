@@ -13,8 +13,6 @@ public class charTrackerManager : MonoBehaviour {
 
 	public void updateTrackers(GameObject[] bars, int currentYear)
 	{
-		bool finished = false;
-
 		for(int i = 0; i < chars.Count; i++)
 		{
 			if(chars[i] != null && chars[i].trackedSim.isAlive )
