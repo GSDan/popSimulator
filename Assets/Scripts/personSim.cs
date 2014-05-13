@@ -25,6 +25,7 @@ public class personSim
 	public string surname { get; private set; }
 
 	charTrackerManager charManager;
+	eventManager evManager;
 
 	string[] maleNames = {"Jon","Dan", "Hugo", "Robin", "Wojtek", "Leeroy", "Craig", "Daemon", "Laurence", "William", 
 							"Albert", "Luigi", "Mario", "Roy", "Kyle", "Sam", "Tim", "Vinny", "Greg", "Brad", 
@@ -54,6 +55,7 @@ public class personSim
 
 	public personSim(int currentYear, float maleMod = 0, personSim guard1 = null, personSim guard2 = null)
 	{
+		evManager = GameObject.FindGameObjectWithTag ("eventManager").GetComponent<eventManager> ();
 		children = new List<personSim> ();
 		yearBorn = currentYear;
 		isAlive = true;
@@ -151,9 +153,9 @@ public class personSim
 					partner.children.Add(child);
 
 					if(partner.isMale != isMale)
-						Debug.Log(getName() + " and " + partner.getName() + " gave birth to " + child.getName() + " in " + currentYear.ToString());
+						evManager.addEvent(getName() + " and " + partner.getName() + " gave birth to " + child.getName() + " in " + currentYear.ToString());
 					else
-						Debug.Log(getName() + " and " + partner.getName() + " adopted " + child.getName() + " in " + currentYear.ToString());
+						evManager.addEvent(getName() + " and " + partner.getName() + " adopted " + child.getName() + " in " + currentYear.ToString());
 
 					GameObject.FindGameObjectWithTag("trackerManager").GetComponent<charTrackerManager>().addTracker(child);
 				}
@@ -164,7 +166,7 @@ public class personSim
 			{
 				partner.isMarried = true;
 				isMarried = true;
-				Debug.Log(getName() + " married " + partner.getName() + " in " + currentYear + "!");
+				evManager.addEvent(getName() + " married " + partner.getName() + " in " + currentYear + "!");
 				if(partner.isMale)
 				{	
 					string message = getName() + " is now ";
@@ -188,8 +190,10 @@ public class personSim
 				//create partner with adjusted gender odds
 				if(isMale)partner = new personSim( yearBorn + UnityEngine.Random.Range(-5, 5), -0.3f);
 				else partner = new personSim(currentYear  + UnityEngine.Random.Range(-5, 5), 0.3f);
-				Debug.Log(getName() + " started going out with " + partner.getName() + " in " + currentYear);
+				evManager.addEvent(getName() + " started going out with " + partner.getName() + " in " + currentYear);
 			}
+
+			updateThoughts(currentYear);
 
 			return diedThisYear (causes, currentYear);
 		}
@@ -227,7 +231,7 @@ public class personSim
 					isAlive = false;
 					yearDied = currentYear;
 					diedFrom = cause;
-					Debug.Log(getName() + " died in " + currentYear + " of " + cause.name + ", age " + (currentYear - yearBorn) );
+					evManager.addEvent(getName() + " died in " + currentYear + " of " + cause.name + ", age " + (currentYear - yearBorn) );
 					return true;
 				}
 			}
@@ -248,6 +252,8 @@ public class personSim
 		//loop through all possible messages and say as many unique things as appropriate
 		for(int i = 0; i < charThoughts.Length; i++)
 		{
+			charThoughts[i] = "";
+
 			//looking after parents?
 			if(!parents && (guard1 != null && guard2 != null) && (guard1.getAge(currentYear) > 80 ||  guard1.getAge(currentYear) > 80))
 			{
@@ -294,7 +300,6 @@ public class personSim
 			//has kids already!
 			else if(!kids && children.Count > 0)
 			{
-				charThoughts[i] = "";
 				//is old?
 				if(getAge(currentYear) > 80)
 				{
@@ -328,7 +333,7 @@ public class personSim
 				}
 				else if(avAge > 30 && kidsAlive)
 				{
-					charThoughts[i] += " Hopefully I'll be a grandparent soon.";
+					charThoughts[i] += " Hopefully I'll be a grandparent soon!";
 				}
 
 				kids = true;
@@ -338,5 +343,17 @@ public class personSim
 	}
 
 	public string getName(){ return firstName + " " + surname;}	
+
+	public string getThoughts()
+	{
+		string final = "";
+
+		foreach(string thought in charThoughts)
+		{
+			final += thought + "\n";
+		}
+
+		return final;
+	}
 }
 

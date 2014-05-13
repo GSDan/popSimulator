@@ -5,9 +5,6 @@ using System.Collections.Generic;
 public class charTrackerManager : MonoBehaviour {
 
 	List<charTracker> chars = new List<charTracker>();
-	int numDead = 0;
-
-	int lastBorn = 0;
 
 	public int getNumChars()
 	{
@@ -81,7 +78,6 @@ public class charTrackerManager : MonoBehaviour {
 		tracker.transform.GetComponentInChildren<UILabel> ().text = sim.firstName;
 		chars.Add(tracker);
 
-		lastBorn = sim.yearBorn;
 	}
 
 

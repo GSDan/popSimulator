@@ -6,7 +6,7 @@ public class popChart : MonoBehaviour {
 	public float totalPop { get; set;}
 
 	Transform bar;
-	TextMesh ageLabel;
+	UILabel ageLabel;
 
 
 	void Start()
@@ -18,7 +18,7 @@ public class popChart : MonoBehaviour {
 	{
 		if(ageLabel == null)
 		{
-			ageLabel = transform.FindChild ("age").GetComponent<TextMesh> ();
+			ageLabel = transform.FindChild ("age").GetComponent<UILabel> ();
 		}
 		ageLabel.text = age.ToString();
 

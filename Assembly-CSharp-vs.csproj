@@ -151,6 +151,9 @@
      <Compile Include="Assets\Scripts\popChart.cs" />
      <Compile Include="Assets\charTracker.cs" />
      <Compile Include="Assets\charTrackerManager.cs" />
+     <Compile Include="Assets\closeButton.cs" />
+     <Compile Include="Assets\eventManager.cs" />
+     <Compile Include="Assets\eventNotifier.cs" />
      <Compile Include="Assets\onclick.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\NGUI\ReadMe - 3.5.9.txt" />

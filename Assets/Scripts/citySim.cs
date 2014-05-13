@@ -33,21 +33,21 @@ public class citySim : MonoBehaviour {
 	float birthRate = 0;
 
 	GameObject[] chart;
-	TextMesh popCounter;
-	TextMesh yearLabel;
-	TextMesh avgAgeLabel;
+	UILabel popCounter;
+	UILabel yearLabel;
+	UILabel avgAgeLabel;
 
 	charTrackerManager iconTracker;
 
 	// Use this for initialization
 	void Start () {
-		GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera").transform.GetChild(0).gameObject;
+		GameObject cam = GameObject.FindGameObjectWithTag ("MainCamera").transform.FindChild ("inGame").gameObject;
 
 		iconTracker = GameObject.FindGameObjectWithTag ("trackerManager").GetComponent<charTrackerManager> ();
 
-		popCounter = cam.transform.FindChild ("popTotal").GetComponent<TextMesh>();
-		yearLabel = cam.transform.FindChild ("curYear").GetComponent<TextMesh>();
-		avgAgeLabel = cam.transform.FindChild ("avgAge").GetChild(0).GetComponentInChildren<TextMesh> ();
+		popCounter = cam.transform.FindChild ("popTotal").GetComponent<UILabel>();
+		yearLabel = cam.transform.FindChild ("curYear").GetComponent<UILabel>();
+		avgAgeLabel = cam.transform.FindChild ("avgAge").GetChild(0).GetComponentInChildren<UILabel> ();
 
 		UnityEngine.Random.seed = (int)System.DateTime.Now.Ticks;
 
