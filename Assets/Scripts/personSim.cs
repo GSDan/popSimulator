@@ -26,6 +26,9 @@ public class personSim
 
 	public string firstName { get; private set; }
 	public string surname { get; private set; }
+	string maidenName;
+	string genG1;
+	string genG2;
 
 	charTrackerManager charManager;
 	eventManager evManager;
@@ -113,12 +116,25 @@ public class personSim
 			}
 			else generateName();//no parents given, randomly gen everything
 
+			maidenName = surname;
 			eyeColour = eyeColours[UnityEngine.Random.Range(0, eyeColours.Length)];
 			hairColour = hairColours[UnityEngine.Random.Range(0, hairColours.Length)];
 			hairDescription = hairModifiers[UnityEngine.Random.Range(0, hairModifiers.Length)] + ", " + hairTypes[UnityEngine.Random.Range(0, hairTypes.Length)];
 		}
 		
 
+	}
+
+	public string[] genRandomParentNames()
+	{
+		if(genG1 != null && genG2 != null)
+		{
+			return new string[]{ genG1, genG2};
+		}
+		genG1 = maleNames [UnityEngine.Random.Range (0, maleNames.Length)] + " " + maidenName;
+		genG2 = femaleNames [UnityEngine.Random.Range (0, femaleNames.Length)] + " " + maidenName;
+		return new string[] { genG1, genG2};
+		 
 	}
 
 	public int getAge(int currentYear = -3)
@@ -376,7 +392,7 @@ public class personSim
 				{
 					charThoughts[i] = "My children died before me, how could this happen??";
 				}
-				else if(children.Count > 0 && childDead != null)
+				else if(childDead != null)
 				{
 					charThoughts[i] = "Poor little " + childDead.firstName + ".";
 				}
