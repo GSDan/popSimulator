@@ -14,6 +14,7 @@ public class citySim : MonoBehaviour {
 	public float minBirthRatePerThousand = 8.5f;
 	public float advancesVsCancer = 0.01f;
 	public float advancesVsHeartDisease = 0.01f;
+	public float advancesVsSmoking = 0.009f;
 	public int maxNetYearlyImmigration = 196000;
 
 	public TextAsset deathStatistics; 
@@ -38,6 +39,38 @@ public class citySim : MonoBehaviour {
 	UILabel avgAgeLabel;
 
 	charTrackerManager iconTracker;
+
+	public void updateBirthChange()
+	{
+		birthRateChange = float.Parse(UIInput.current.value,  CultureInfo.InvariantCulture) / 100;
+		Debug.Log (birthRateChange);
+	}
+
+	public void updateMinBirth()
+	{
+		minBirthRatePerThousand = float.Parse(UIInput.current.value,  CultureInfo.InvariantCulture);
+	}
+
+	public void updateCancerChange()
+	{
+		advancesVsCancer = float.Parse(UIInput.current.value, CultureInfo.InvariantCulture) / 100;
+	}
+
+	public void updateHeartChange()
+	{
+		advancesVsHeartDisease = float.Parse(UIInput.current.value,  CultureInfo.InvariantCulture) / 100;
+	}
+
+	public void updateSmokingChange()
+	{
+		advancesVsSmoking = float.Parse(UIInput.current.value,  CultureInfo.InvariantCulture) / 100;
+	}
+
+	public void updateImmigration()
+	{
+		maxNetYearlyImmigration = int.Parse(UIInput.current.value, NumberStyles.AllowLeadingSign | 
+		                                    NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite);
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -79,7 +112,7 @@ public class citySim : MonoBehaviour {
 			new causeOfDeath ("Parkinson's disease", deathsData, 14, 98),
 			new causeOfDeath ("Alzheimer’s disease", deathsData, 16, 98),
 			new causeOfDeath ("heart disease", deathsData, 18, 98),
-			new causeOfDeath ("pneumonia", deathsData, 20, 93),
+			new causeOfDeath ("pneumonia", deathsData, 20, 98),
 			new causeOfDeath ("a lower respiratory disease", deathsData, 22),
 			new causeOfDeath ("chronic obstructive pulmonary disease", deathsData, 24),
 			new causeOfDeath ("a disease of the digestive system", deathsData, 26),
@@ -122,6 +155,7 @@ public class citySim : MonoBehaviour {
 			birthRate = ((float)popData[0]/((float)currentPop/1000));
 			causesOfDeath[3].alterChances(1 - advancesVsCancer);
 			causesOfDeath[9].alterChances(1 - advancesVsHeartDisease);
+			causesOfDeath[12].alterChances(1 - (advancesVsSmoking /2));
 
 			if(startYear == currentYear)
 			{

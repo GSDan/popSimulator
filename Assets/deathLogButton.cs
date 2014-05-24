@@ -23,7 +23,7 @@ public class deathLogButton : MonoBehaviour {
 			manager = GameObject.FindGameObjectWithTag ("eventManager").GetComponent<eventManager> ();
 			chart = GUIMainpanel.transform.FindChild("Chart").gameObject;
 		}
-
+		GameObject.FindGameObjectWithTag ("MainCamera").transform.FindChild ("popUp").transform.FindChild ("options").gameObject.SetActive(false);
 		GameObject.FindGameObjectWithTag("MainCamera").transform.FindChild("popUp").transform.FindChild("charViewer").gameObject.SetActive(false);
 		deathCont.SetActive (true);
 

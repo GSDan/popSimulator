@@ -50,6 +50,7 @@ public class charTracker : MonoBehaviour {
 		}
 		charCont.gameObject.SetActive(true);
 		GUIProfilepanel.transform.FindChild("deathLog").gameObject.SetActive(false);
+		GUIProfilepanel.transform.FindChild("options").gameObject.SetActive(false);
 		GUIProfilepanel.enabled = true;
 		GUIMainpanel.enabled = false;
 		GUIname.text = trackedSim.getName ();
