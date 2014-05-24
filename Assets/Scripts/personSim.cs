@@ -30,6 +30,8 @@ public class personSim
 	string genG1;
 	string genG2;
 
+	int lastYearRun = 0;
+
 	charTrackerManager charManager;
 	eventManager evManager;
 
@@ -156,6 +158,12 @@ public class personSim
 
 	public bool yearlyUpdate(List<personSim> chars, causeOfDeath[] causes, int currentYear)
 	{
+		if(currentYear <= lastYearRun)
+		{
+			return false;
+		}
+
+		lastYearRun = currentYear;
 
 		if(charManager == null)
 		{
@@ -170,7 +178,17 @@ public class personSim
 				partner.diedThisYear (causes, currentYear);
 			}
 
-			if(partner != null && partner.isAlive && age >= 18 && age <= 46  && children.Count < 2 && charManager.getNumChars() < 8)
+			//make sure parents get updated!
+			if(guard1 != null && guard1.isAlive)
+			{
+				guard1.yearlyUpdate(chars, causes, currentYear);
+			}
+			if(guard2 != null && guard2.isAlive)
+			{
+				guard2.yearlyUpdate(chars, causes, currentYear);
+			}
+
+			if(partner != null && partner.isAlive && age >= 20 && age <= 53  && children.Count < 2 && charManager.getNumChars() < 8)
 			{
 				//chance of gaining child
 				if((UnityEngine.Random.value >= 0.95f) || (charManager.getNumChars() < 3 && (UnityEngine.Random.value >= 0.85f)))
@@ -214,7 +232,7 @@ public class personSim
 			}
 
 			//check if find a partner
-			else if(partner == null && age >= 17 && UnityEngine.Random.value >= 0.85f)
+			else if(partner == null && age >= 18 && UnityEngine.Random.value >= 0.88f)
 			{
 				//create partner with adjusted gender odds
 				if(isMale)partner = new personSim( yearBorn + UnityEngine.Random.Range(-5, 5), -0.3f);
@@ -261,7 +279,7 @@ public class personSim
 					isAlive = false;
 					yearDied = currentYear;
 					diedFrom = cause;
-					evManager.addEvent(getName() + " died in " + currentYear + " of " + cause.name + ", age " + (currentYear - yearBorn) );
+					evManager.addDeath(getName() + " died in " + currentYear + " of " + cause.name + ", age " + (currentYear - yearBorn) );
 					return true;
 				}
 			}

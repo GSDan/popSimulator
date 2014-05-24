@@ -4,6 +4,7 @@ using System.Collections;
 public class causeOfDeath
 {
 	public string name;
+	int doubleAt = 120;
 
 	//CHANCES OF DEATH FOR AGE + GENDER
 	//statistics are deaths per million in UK
@@ -31,8 +32,14 @@ public class causeOfDeath
 	float femaleseventyFiveEightyFour;
 	float femaleeightyFivePlus;
 
-	public causeOfDeath(string description, string[,] data, int maleRow )
+	public causeOfDeath(string description, string[,] data, int maleRow, int doubleAt = 0 )
 	{
+
+		if(doubleAt != 0)
+		{
+			this.doubleAt = doubleAt;
+		}
+
 		underOne = float.Parse(data [3, maleRow]);
 		oneToFour = float.Parse(data [4, maleRow]);
 		fiveToFourteen = float.Parse(data [5, maleRow]);
@@ -64,7 +71,12 @@ public class causeOfDeath
 
 	public bool checkForDeath(personSim sim, int currentYear)
 	{
-		return roulette(getChance(currentYear - sim.yearBorn, sim.isMale));
+		float chance = getChance (currentYear - sim.yearBorn, sim.isMale);
+
+		if (currentYear - sim.yearBorn > doubleAt)
+			chance *= 2;
+
+		return roulette(chance);
 	}
 
 	public int populationToll(int[] popCount)

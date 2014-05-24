@@ -13,6 +13,7 @@ public class charTracker : MonoBehaviour {
 	static UILabel GUIgender;
 	static UILabel GUIFlavour;
 	static GameObject chart;
+	static Transform charCont;
 
 	public int yOffset = 0;
 
@@ -32,18 +33,23 @@ public class charTracker : MonoBehaviour {
 	{
 		if(GUIProfilepanel == null)
 		{
-			GUIProfilepanel = GameObject.FindGameObjectWithTag("MainCamera").transform.FindChild("charViewer").gameObject.GetComponent<UIPanel>();
+			GUIProfilepanel = GameObject.FindGameObjectWithTag("MainCamera").transform.FindChild("popUp").GetComponent<UIPanel>();
+			charCont = GUIProfilepanel.transform.FindChild("charViewer");
+
+			
 			GUIMainpanel = GameObject.FindGameObjectWithTag("MainCamera").transform.FindChild("inGame").gameObject.GetComponent<UIPanel>();
-			GUIname = GUIProfilepanel.transform.FindChild("name").GetComponent<UILabel> ();
-			GUIage = GUIProfilepanel.transform.FindChild("age").GetChild(0).GetComponent<UILabel>();
-			GUIrelationship = GUIProfilepanel.transform.FindChild("relationship").GetChild(0).GetComponent<UILabel>();
-			GUIchildren = GUIProfilepanel.transform.FindChild("children").GetChild(0).GetComponent<UILabel>();
-			GUIparents = GUIProfilepanel.transform.FindChild("parents").GetChild(0).GetComponent<UILabel>();
-			GUIgender = GUIProfilepanel.transform.FindChild("gender").GetChild(0).GetComponent<UILabel>();
-			GUIFlavour = GUIProfilepanel.transform.FindChild("flavourText").GetComponent<UILabel> ();
+
+			GUIname = charCont.FindChild("name").GetComponent<UILabel> ();
+			GUIage = charCont.FindChild("age").GetChild(0).GetComponent<UILabel>();
+			GUIrelationship = charCont.FindChild("relationship").GetChild(0).GetComponent<UILabel>();
+			GUIchildren = charCont.FindChild("children").GetChild(0).GetComponent<UILabel>();
+			GUIparents = charCont.FindChild("parents").GetChild(0).GetComponent<UILabel>();
+			GUIgender = charCont.FindChild("gender").GetChild(0).GetComponent<UILabel>();
+			GUIFlavour = charCont.FindChild("flavourText").GetComponent<UILabel> ();
 			chart = GUIMainpanel.transform.FindChild("Chart").gameObject;
 		}
-
+		charCont.gameObject.SetActive(true);
+		GUIProfilepanel.transform.FindChild("deathLog").gameObject.SetActive(false);
 		GUIProfilepanel.enabled = true;
 		GUIMainpanel.enabled = false;
 		GUIname.text = trackedSim.getName ();
