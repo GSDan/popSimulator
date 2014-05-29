@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.IO;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,7 +44,6 @@ public class citySim : MonoBehaviour {
 	public void updateBirthChange()
 	{
 		birthRateChange = float.Parse(UIInput.current.value,  CultureInfo.InvariantCulture) / 100;
-		Debug.Log (birthRateChange);
 	}
 
 	public void updateMinBirth()
@@ -138,7 +138,9 @@ public class citySim : MonoBehaviour {
 			chart[i].GetComponent<popChart>().totalPop = currentPop;
 			chart[i].GetComponent<popChart>().updateAge(i);
 		}
-		
+
+
+
 	}
 	
 	// Update is called once per frame
@@ -237,7 +239,39 @@ public class citySim : MonoBehaviour {
 			}
 		}
 
-		avgAgeLabel.text = (total / currentPop).ToString ("N1", new CultureInfo( "en-US", false ).NumberFormat);
+		float remaining = (int)currentPop/2;
+		float medianAv = 0;
+
+		for(int i = 0; i < popData.Length; i++)
+		{
+			remaining -= popData[i];
+			if(remaining < 0)
+			{
+				float remainder = 0 - remaining;
+				Debug.Log("remainder: " + remaining/popData[i]);
+				medianAv = i + (remaining/popData[i]);
+				break;
+			}
+		}
+
+		avgAgeLabel.text = (medianAv).ToString ("N1", new CultureInfo( "en-US", false ).NumberFormat);
+
+		int total85Plus = 0;
+
+		for(int i = 65; i < popData.Length; i++)
+		{
+			total85Plus += popData[i];
+		}
+
+		if(!File.Exists("results.txt"))
+			File.CreateText("results.txt");
+
+		using (StreamWriter writer = new StreamWriter("results.txt", true))
+		{
+			//writer.WriteLine(total85Plus/currentPop * 100 );
+			writer.WriteLine(medianAv);
+		}
+		
 	}
 
 	void addImmigrants()
